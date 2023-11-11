@@ -1,5 +1,7 @@
 package ru.aston.myArrayList;
 
+import ru.aston.mySort.MergeSort;
+
 import java.util.*;
 
 public class MyArrayList<E> implements CustomArrayList<E> {
@@ -11,6 +13,8 @@ public class MyArrayList<E> implements CustomArrayList<E> {
     private static final int DEFAULT_CAPACITY = 10;
 
     private static final Object[] EMPTY_ARRAY = {};
+
+    private MergeSort<E> mergeSort = new MergeSort<>();
 
 
 
@@ -68,7 +72,7 @@ public class MyArrayList<E> implements CustomArrayList<E> {
 
     @Override
     public void sort(Comparator<? super E> c) {
-
+        mergeSort.sort((E[]) elementOfList, 0, size() - 1, c);
     }
 
     @Override
@@ -103,9 +107,8 @@ public class MyArrayList<E> implements CustomArrayList<E> {
     
     @Override
     public String toString() {
-//        return Arrays.toString(Arrays.stream(elementOfList).filter(Objects::nonNull).toArray());
-        System.out.print("[ " + elementOfList.length + " ] - ");
-        return Arrays.toString(elementOfList);
+        return Arrays.toString(Arrays.stream(elementOfList).filter(Objects::nonNull).toArray());
+//        System.out.print("[ " + elementOfList.length + " ] - ");
     }
 
     @Override
@@ -118,7 +121,7 @@ public class MyArrayList<E> implements CustomArrayList<E> {
         return super.equals(obj);
     }
 
-    public boolean indexOutOfArray(int index){
+    private boolean indexOutOfArray(int index){
         if(index <= size - 1 || index >= 0)
             return true;
         else

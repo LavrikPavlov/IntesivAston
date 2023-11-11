@@ -1,61 +1,39 @@
 package ru.aston;
 
-
 import ru.aston.myArrayList.MyArrayList;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.Comparator;
+import java.util.Random;
+
 
 public class App
 {
     public static void main( String[] args ) {
         System.out.println("Hello Aston");
-        MyArrayList<Integer> myArrayList = new MyArrayList<>();
-        System.out.println(myArrayList.size() + " | " + myArrayList);
 
-        for(int i = 0; i < 20; i++){
-            myArrayList.add(i);
+        Random random = new Random();
+        MyArrayList<Integer> list = new MyArrayList<>();
+
+
+        for (int i = 0; i < 5; i++){
+            list.add(random.nextInt(100));
         }
-        System.out.println(myArrayList.size() + " | " + myArrayList);
 
-        myArrayList.clear();
-
-        System.out.println(myArrayList.size() + " | " + myArrayList);
-        if(!myArrayList.isEmpty())
-            System.out.println(myArrayList.get(1));
-        else {
-            System.out.println(myArrayList.isEmpty());
-            for(int i = 0; i < 5; i++){
-                myArrayList.add(i);
+        System.out.println(list);
+        list.sort(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                if(o1<=o2) {
+                    if (o1.equals(o2))
+                        return 0;
+                    return -1;
+                }
+                else
+                    return 1;
             }
-            System.out.println(myArrayList.get(0));
-        }
-        System.out.println(myArrayList.size() + " | " + myArrayList);
-        myArrayList.remove(0);
-        System.out.println(myArrayList.size() + " | " + myArrayList);
-        System.out.println();
+        });
 
-
-        MyArrayList<String> arrayList = new MyArrayList<>();
-        arrayList.clear();
-
-        arrayList.add("Привет");
-        arrayList.add("как");
-        arrayList.add("дела");
-        arrayList.add("мой");
-        arrayList.add("друг");
-
-
-        System.out.println(arrayList);
-
-        arrayList.remove("Привет");
-
-        System.out.println(arrayList);
-
-
-
+        System.out.println(list);
 
     }
 }
