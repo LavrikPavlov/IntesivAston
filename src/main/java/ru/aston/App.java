@@ -1,9 +1,10 @@
 package ru.aston;
 
 
-public class App 
+public class App
 {
     public static void main( String[] args ) {
-        System.out.println("Hello Aston");
+        System.out.println("Привет Aston");
+
     }
 }
