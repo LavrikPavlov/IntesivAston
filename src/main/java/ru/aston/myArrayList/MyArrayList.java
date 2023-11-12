@@ -17,17 +17,16 @@ public class MyArrayList<E> implements CustomArrayList<E> {
     private MergeSort<E> mergeSort = new MergeSort<>();
 
 
-
-    public MyArrayList(){
+    public MyArrayList() {
         this.size = 0;
         this.elementOfList = new Object[DEFAULT_CAPACITY];
     }
 
     public MyArrayList(int size) {
-        if(size > 0){
+        if (size > 0) {
             this.size = size;
             this.elementOfList = new Object[size];
-        } else if(size == 0){
+        } else if (size == 0) {
             this.size = 0;
             this.elementOfList = EMPTY_ARRAY;
         } else
@@ -37,22 +36,18 @@ public class MyArrayList<E> implements CustomArrayList<E> {
 
     @Override
     public void add(int index, E element) {
-        if(index <= size - 1 || index >= 0) {
-            if(elementOfList[index] == null) {
-                elementOfList[index] = element;
-                size++;
-            } else
-                elementOfList[index] = element;
+        indexOutOfArray(index);
+        if (elementOfList[index] == null) {
+            elementOfList[index] = element;
+            size++;
         } else
-            throw new IllegalArgumentException("Размер массива равен = " + size
-                    + "\nВаш Index = " + index + "\nIndexOutOfArray" );
-
+            elementOfList[index] = element;
     }
 
     @Override
     public void add(E element) {
         if (elementOfList.length == size) {
-            elementOfList = Arrays.copyOf(elementOfList, size() + 1);
+            elementOfList = Arrays.copyOf(elementOfList, size() + DEFAULT_CAPACITY);
         }
         elementOfList[size] = element;
         size++;
@@ -60,8 +55,13 @@ public class MyArrayList<E> implements CustomArrayList<E> {
 
     @Override
     public void addAll(Collection<? extends E> c) {
-        size = c.size();
-        elementOfList = Arrays.copyOf(c.toArray(), size);
+//        size = c.size();
+//        elementOfList = Arrays.copyOf(c.toArray(), size);
+
+        ensureCapacity(size + c.size());
+        System.arraycopy(c.toArray(), 0, elementOfList, size, c.size());
+
+        size += c.size();
     }
 
     @Override
@@ -95,8 +95,8 @@ public class MyArrayList<E> implements CustomArrayList<E> {
 
     @Override
     public boolean remove(Object o) {
-        for(int i = 0; i <= size - 1; i++){
-            if(elementOfList[i].equals(o)){
+        for (int i = 0; i <= size - 1; i++) {
+            if (elementOfList[i].equals(o)) {
                 removeFromList(i);
                 return true;
             }
@@ -104,7 +104,7 @@ public class MyArrayList<E> implements CustomArrayList<E> {
         return false;
     }
 
-    
+
     @Override
     public String toString() {
         return Arrays.toString(Arrays.stream(elementOfList).filter(Objects::nonNull).toArray());
@@ -121,30 +121,36 @@ public class MyArrayList<E> implements CustomArrayList<E> {
         return super.equals(obj);
     }
 
-    private boolean indexOutOfArray(int index){
-        if(index <= size - 1 || index >= 0)
+    private boolean indexOutOfArray(int index) {
+        if (index <= size - 1 || index >= 0)
             return true;
         else
             throw new IllegalArgumentException("Выход за рамки листа. \n"
                     + index + " - за рамками листа");
     }
 
-    public int size(){
+    public int size() {
         return size;
     }
 
-    private Object removeFromList(int index){
-        Object o = elementOfList[index];
+    private Object removeFromList(int index) {
         elementOfList[index] = null;
-        for(int i = index; i <= size; i++) {
-            if(i == size - 1) {
+        for (int i = index; i <= size; i++) {
+            if (i == size - 1) {
                 elementOfList[i] = null;
                 break;
             } else
-                elementOfList[i] = elementOfList[i+1];
+                elementOfList[i] = elementOfList[i + 1];
         }
         elementOfList = Arrays.copyOf(elementOfList, size() - 1);
         size--;
-        return o;
+        return elementOfList;
+    }
+
+    private void ensureCapacity(int minCapacity) {
+        if (minCapacity > elementOfList.length) {
+            int newCapacity = Math.max(elementOfList.length * 2, minCapacity);
+            elementOfList = Arrays.copyOf(elementOfList, newCapacity);
+        }
     }
 }
