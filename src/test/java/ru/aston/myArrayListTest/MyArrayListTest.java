@@ -46,9 +46,9 @@ public class MyArrayListTest {
 
     @Test
     public void addAll(){
-        int kurs = arrayList.size() - 1;
+        arrayList.clear();
         arrayList.addAll(List.of(1,2,3,4,5));
-        for (int i = kurs; i <= arrayList.size() - 1; i++)
+        for (int i = 0; i <= arrayList.size() - 1; i++)
             Assert.assertEquals((Integer) (i + 1), arrayList.get(i));
     }
 
