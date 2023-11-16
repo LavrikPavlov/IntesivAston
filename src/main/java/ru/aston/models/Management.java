@@ -11,7 +11,8 @@ public class Management {
 
     private String nameCompany;
 
-    public Management(int addressId, String nameCompany) {
+    public Management(int id, int addressId, String nameCompany) {
+        this.id = id;
         this.addressId = addressId;
         this.nameCompany = nameCompany;
     }

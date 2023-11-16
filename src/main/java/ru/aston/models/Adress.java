@@ -12,7 +12,8 @@ public class Adress {
     private String addressFull;
 
 
-    public Adress(int personId, String addressFull) {
+    public Adress(int id, int personId, String addressFull) {
+        this.id = id;
         this.personId = personId;
         this.addressFull = addressFull;
     }
