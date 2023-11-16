@@ -15,12 +15,12 @@ public class ManagementDAO {
 
 
 
-    public ManagementDAO(Connection connection) {
+    public ManagementDAO() {
         this.connection = new DataConnection().conn();
     }
 
 
-    public Management createPerson(String nameCompany, Adress adress) throws SQLException {
+    public Management createManagemnt(String nameCompany, Adress adress) throws SQLException {
         String sql = "INSERT INTO Management(adress_id, name_company) VALUES (?,?)";
         ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.setInt(1, adress.getId());

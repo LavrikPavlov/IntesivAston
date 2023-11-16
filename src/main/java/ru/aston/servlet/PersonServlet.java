@@ -37,5 +37,19 @@ public class PersonServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error");
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+
+        try {
+            Person newPerson = personDAO.createPerson(name, email);
+            response.getWriter().println("New Person created: " + newPerson.getName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.getWriter().println("Error creating new Person");
+        }
+    }
 }
 

@@ -19,13 +19,28 @@
     <tbody>
     <c:forEach var="person" items="${persons}">
         <tr>
-            <td>${person.getId()}</td>
-            <td>${person.getName()}</td>
-            <td>${person.getEmail()}</td>
+            <td>${person.id}</td>
+            <td>${person.name}</td>
+            <td>${person.email}</td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
+
+<h2>Create New Person</h2>
+<form action="${pageContext.request.contextPath}/person" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br>
+
+    <button type="submit">Create Person</button>
+</form>
+
+<button onclick="window.location.href='${pageContext.request.contextPath}/address'">К адресам</button>
+<button onclick="window.location.href='${pageContext.request.contextPath}/management'">К управляющим компаниям</button>
+
 
 </body>
 </html>

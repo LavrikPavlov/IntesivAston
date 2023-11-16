@@ -1,9 +1,7 @@
 package ru.aston.dao;
 
-import com.sun.org.apache.bcel.internal.generic.PUSH;
 import ru.aston.connect.DataConnection;
 import ru.aston.models.Adress;
-import ru.aston.models.Management;
 import ru.aston.models.Person;
 
 import java.sql.*;
@@ -15,27 +13,32 @@ public class AdressDAO {
 
     private final Connection connection;
 
-    public AdressDAO() throws SQLException {
+    public AdressDAO() {
         this.connection = new DataConnection().conn();
     }
 
-    public Adress createNewAdreaa(String adressFull, Person person) throws SQLException {
+    public Adress createNewAdress(String adressFull, Person person) throws SQLException {
         String sql = "INSERT INTO Adress(adress_full, person_id) VALUES (?,?)";
-        int personId;
         ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, adressFull);
-        if(person != null) {
+        if (person != null) {
             ps.setInt(2, person.getId());
-            personId = person.getId();
         } else {
-            personId = Integer.parseInt(null);
+            ps.setInt(2, Types.INTEGER);
         }
         ps.executeUpdate();
-        ResultSet resultSet = ps.getGeneratedKeys();
-        return new Adress(resultSet.getInt(1), personId, adressFull);
+        try (ResultSet resultSet = ps.getGeneratedKeys()) {
+            if (resultSet.next()) {
+                int generatedId = resultSet.getInt(1);
+                int personId = (person != null) ? person.getId() : 0;
+                return new Adress(generatedId, personId, adressFull);
+            } else {
+                throw new SQLException("Failed to retrieve generated key for Address");
+            }
+        }
     }
 
-    public List<Adress> getAllAdress() throws SQLException{
+    public List<Adress> getAllAdress() throws SQLException {
         List<Adress> adressList = new ArrayList<>();
         String sql = "SELECT * FROM Adress";
 
@@ -59,9 +62,5 @@ public class AdressDAO {
         ps.setInt(3, id);
         ps.executeUpdate();
     }
-
-
-
-
 
 }

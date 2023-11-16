@@ -63,4 +63,22 @@ public class PersonDAO {
         ps.setInt(1, id);
         ps.executeUpdate();
     }
+
+    public Person getPersonById(int id) throws SQLException {
+        String sql = "SELECT * FROM Person WHERE id = ?";
+        ps = connection.prepareStatement(sql);
+        ps.setInt(1, id);
+
+        try (ResultSet resultSet = ps.executeQuery()) {
+            if (resultSet.next()) {
+                return new Person(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email")
+                );
+            } else {
+                throw new SQLException("Person not found with ID: " + id);
+            }
+        }
+    }
 }
