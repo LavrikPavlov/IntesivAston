@@ -1,0 +1,55 @@
+drop table Department;
+drop table Task;
+drop table Worker;
+drop table WorkerTask;
+
+create table Department(
+    id serial primary key,
+    name_depart varchar(30)
+);
+
+create table Task(
+    id serial primary key,
+    name_task varchar(40),
+    task_text text
+);
+
+create table Worker(
+    id serial primary key,
+    login varchar(20) unique,
+    name_user varchar(30),
+    department int references Department(id) ON DELETE SET NULL
+);
+
+
+ create table WorkerTask(
+    user_id int references Worker(id) ON DELETE CASCADE,
+    task_id int references Task(id) ON DELETE CASCADE,
+    date_start timestamp
+ );
+
+INSERT INTO Department (name_depart) VALUES
+('IT Department'),
+('Marketing Department'),
+('HR Department');
+
+INSERT INTO Task (name_task, task_text) VALUES
+('Task 1', 'Description for Task 1'),
+('Task 2', 'Description for Task 2'),
+('Task 3', 'Description for Task 3');
+
+INSERT INTO Worker (login, name_user, department) VALUES
+('user1', 'John Doe', 1),
+('user2', 'Jane Smith', 2),
+('user3', 'Bob Johnson', 3);
+
+INSERT INTO WorkerTask (user_id, task_id, date_start) VALUES
+(1, 1, '2023-01-01 08:00:00'),
+(1, 2, '2023-01-02 09:30:00'),
+(2, 1, '2023-01-03 10:45:00'),
+(3, 3, '2023-01-04 12:15:00');
+
+select * from Department;
+select * from Task;
+select * from Worker;
+select * from WorkerTask;
