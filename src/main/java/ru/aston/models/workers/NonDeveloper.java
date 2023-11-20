@@ -1,14 +1,27 @@
 package ru.aston.models.workers;
 
-import lombok.Data;
-import ru.aston.models.abstractModels.Worker;
+
+import ru.aston.models.Department;
+import ru.aston.models.abstractModels.AbstractWorker;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Data
+
 @Entity
-public class NonDeveloper extends Worker {
+@Table(name = "NonDeveloper")
+public class NonDeveloper extends AbstractWorker {
+
+    public NonDeveloper() {
+
+    }
+
+    public NonDeveloper(String login, String nameUser, Department department, String role) {
+        super(login, nameUser, department);
+        this.role = role;
+    }
+
     @Column(name = "role")
     private String role;
 

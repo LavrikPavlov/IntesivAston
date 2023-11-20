@@ -1,7 +1,5 @@
 package ru.aston.servlet;
 
-import ru.aston.dao.DepartamentDAO;
-import ru.aston.dao.abstractDAO.GenericWorkerDAO;
 import ru.aston.models.Department;
 
 import javax.servlet.ServletException;
@@ -15,8 +13,6 @@ import java.util.List;
 @WebServlet("/workers")
 public class WorkersServlet extends HttpServlet {
 
-    private GenericWorkerDAO workerDAO;
-    private DepartamentDAO departamentDAO;
 
     @Override
     public void init() throws ServletException {

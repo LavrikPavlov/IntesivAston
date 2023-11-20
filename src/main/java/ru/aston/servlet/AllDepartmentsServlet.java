@@ -1,6 +1,5 @@
 package ru.aston.servlet;
 
-import ru.aston.dao.DepartamentDAO;
 import ru.aston.models.Department;
 
 import javax.servlet.ServletException;
@@ -13,24 +12,23 @@ import java.io.IOException;
 @WebServlet("/departments")
 public class AllDepartmentsServlet extends HttpServlet {
 
-    private DepartamentDAO departamentDAO;
 
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        this.departamentDAO = new DepartamentDAO();
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("departments", departamentDAO.getAllDepartments());
-        req.getRequestDispatcher("departament/all-departments.jsp").forward(req,resp);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Department department = departamentDAO.createNewDepartment(req.getParameter("department"));
-        resp.sendRedirect(req.getContextPath() + "/workers");
-    }
+//    @Override
+//    public void init() throws ServletException {
+//        super.init();
+//        this.departamentDAO = new DepartamentDAO();
+//    }
+//
+//    @Override
+//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        req.setAttribute("departments", departamentDAO.getAllDepartments());
+//        req.getRequestDispatcher("departament/all-departments.jsp").forward(req,resp);
+//    }
+//
+//    @Override
+//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        Department department = departamentDAO.createNewDepartment(req.getParameter("department"));
+//        resp.sendRedirect(req.getContextPath() + "/workers");
+//    }
 
 }
