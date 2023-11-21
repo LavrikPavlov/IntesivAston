@@ -1,7 +1,9 @@
-<%@ page import="ru.aston.models.Worker, ru.aston.models.Department, ru.aston.models.Task" %>
+<%@ page import="ru.aston.models.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 
 <html>
 <head>
@@ -36,6 +38,14 @@
         <p>Name: ${worker.nameWorker}</p>
         <p>Department: ${worker.department.nameDepart}</p>
 
+        <c:if test="${worker.getClass().name == 'ru.aston.models.workers.NonDeveloper' and not empty worker.role}">
+             <p>Role: ${worker.role}</p>
+        </c:if>
+        <c:if test="${worker.getClass().name == 'ru.aston.models.workers.Developer' and not empty worker.programmingLanguage}">
+             <p>Programming language: ${worker.programmingLanguage}</p>
+        </c:if>
+
+
         <h2>Tasks</h2>
         <c:forEach var="task" items="${worker.tasks}">
             <p>${task.nameTask}</p>
@@ -48,6 +58,20 @@
             <input type="text" id="name" name="name" value="${worker.nameWorker}">
             <button type="button" onclick="performAction('updateWorker')">Update Name</button>
             <br>
+
+            <c:if test="${worker.getClass().name == 'ru.aston.models.workers.NonDeveloper' and not empty worker.role}">
+                <label for="role">Role:</label>
+                <input type="text" id="role" name="role" value="${worker.role}">
+                <button type="button" onclick="performAction('updateWorker')">Update Role</button>
+                <br>
+            </c:if>
+
+            <c:if test="${worker.getClass().name == 'ru.aston.models.workers.Developer' and not empty worker.programmingLanguage}">
+                <label for="programmingLanguage">Programming Language:</label>
+                <input type="text" id="programmingLanguage" name="programmingLanguage" value="${worker.programmingLanguage}">
+                <button type="button" onclick="performAction('updateWorker')">Update Programming Language</button>
+                <br>
+            </c:if>
 
             <label for="department">Select Department:</label>
             <select id="department" name="department">

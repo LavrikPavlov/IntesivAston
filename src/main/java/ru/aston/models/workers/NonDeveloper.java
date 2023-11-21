@@ -1,24 +1,23 @@
 package ru.aston.models.workers;
 
-
 import ru.aston.models.Department;
-import ru.aston.models.abstractModels.AbstractWorker;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "NonDeveloper")
-public class NonDeveloper extends AbstractWorker {
+@DiscriminatorValue("NonDeveloper")
+public class NonDeveloper extends Worker {
 
     public NonDeveloper() {
-
+        super();
     }
 
-    public NonDeveloper(String login, String nameUser, Department department, String role) {
-        super(login, nameUser, department);
+    public NonDeveloper(String login, String nameWorker,
+                        Department department, String role) {
+        super(login, nameWorker, department);
         this.role = role;
     }
 

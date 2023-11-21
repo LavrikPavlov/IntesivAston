@@ -2,26 +2,26 @@ package ru.aston.models.workers;
 
 
 import ru.aston.models.Department;
-import ru.aston.models.abstractModels.AbstractWorker;
-
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "Developer")
-public class Developer extends AbstractWorker {
-
-    public Developer() {
-    }
-
-    public Developer(String login, String nameUser, Department department, String programmingLanguage) {
-        super(login, nameUser, department);
-        this.programmingLanguage = programmingLanguage;
-    }
+@DiscriminatorValue("Developer")
+public class Developer extends Worker {
 
     @Column(name = "programming_language", length = 30)
     private String programmingLanguage;
+
+    public Developer() {
+        super();
+    }
+
+    public Developer(String login, String nameUser,
+                     Department department, String programmingLanguage) {
+        super(login, nameUser, department);
+        this.programmingLanguage = programmingLanguage;
+    }
 
     public String getProgrammingLanguage() {
         return programmingLanguage;
