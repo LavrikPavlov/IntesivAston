@@ -37,9 +37,6 @@ public class WorkersServlet extends HttpServlet {
         List<Worker> workers = workerDAO.findAll();
         req.setAttribute("departments", departments);
         req.setAttribute("workers", workers);
-
-//
-//        req.setAttribute("workers", workerDAO.getAllWorkers());
         req.getRequestDispatcher("worker/all-workers.jsp").forward(req,resp);
     }
 
@@ -48,21 +45,25 @@ public class WorkersServlet extends HttpServlet {
 
         Department department = departmentDAO
                 .findById(Integer.parseInt(req.getParameter("department")));
+        Worker workerNon = new Developer();
+        Worker workerDev = new NonDeveloper();
 
         if (department.getId() == 1) {
+            workerDev.setDepartment(department);
+            workerDev.setLogin(req.getParameter("login"));
+            workerDev.setNameUser(req.getParameter("nameWorker"));
             Developer newDevoleper = new Developer(
-                    req.getParameter("login"),
-                    req.getParameter("nameWorker"),
-                    department,
-                    ""
+                    workerDev,
+                    "None"
             );
             workerDAO.save(newDevoleper);
         } else {
+            workerNon.setDepartment(department);
+            workerNon.setLogin(req.getParameter("login"));
+            workerNon.setNameUser(req.getParameter("nameWorker"));
             NonDeveloper newNonDev = new NonDeveloper(
-                    req.getParameter("login"),
-                    req.getParameter("nameWorker"),
-                    department,
-                    ""
+                    workerNon,
+                    "None"
             );
             workerDAO.save(newNonDev);
         }

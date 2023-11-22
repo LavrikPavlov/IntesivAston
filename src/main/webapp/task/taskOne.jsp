@@ -32,7 +32,7 @@
         <h1>Task Details</h1>
         <p>ID: ${Task.id}</p>
         <p>Name: ${Task.nameTask}</p>
-        <p>Text: ${Task.taskText}</p>
+        <p>Text: ${Task.textTask}</p>
          <h2>Сотрудники работающие на задаче</h2>
                 <table border="1">
                     <thead>
@@ -58,8 +58,8 @@
             <label for="taskName">New Task Name:</label>
             <input type="text" id="taskName" name="taskName" value="${Task.nameTask}">
             <br>
-            <label for="taskText">New Task Text:</label>
-            <textarea id="taskText" name="taskText" rows="4" cols="50">${Task.taskText}</textarea>
+            <label for="textTask">New Task Text:</label>
+            <textarea id="textTask" name="textTask" rows="4" cols="50">${Task.textTask}</textarea>
             <br>
             <button type="button" onclick="performAction('updateTask')">Update Task</button>
 

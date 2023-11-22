@@ -73,32 +73,41 @@ public class WorkerProfileServlet extends HttpServlet {
                 int taskId = Integer.parseInt(req.getParameter("taskId"));
 
                 Worker worker = workerDAO.findById(Integer.parseInt(workerIdParam));
+                Department department = departmentDAO
+                        .findById(Integer.parseInt(req.getParameter("department")));
 
                 switch (action) {
                     case "assignTask":
                         workerDAO.assignTask(workerId,taskId);
+                        break;
 
                     case "removeTask":
                         workerDAO.deleteTask(workerId,taskId);
                         break;
 
                     case "changeDepart":
-
+                        worker.setDepartment(department);
+                        workerDAO.chacngeWorkerType(worker, req, resp);
+                        workerDAO.update(worker);
                         resp.setStatus(HttpServletResponse.SC_OK);
                         break;
 
                     case "updateWorker":
+                        worker.setNameWorker(req.getParameter("name"));
 
+                        if(worker.getWorkerType().equals("Developer")) {
+                            ((Developer) worker).setProgrammingLanguage(req.getParameter("programmingLanguage"));
+                        } else {
+                            ((NonDeveloper) worker).setRole(req.getParameter("role"));
+                        }
+
+                        workerDAO.update(worker);
                         resp.setStatus(HttpServletResponse.SC_OK);
                         break;
 
-                    case "updateAny":
-
-                        resp.setStatus(HttpServletResponse.SC_OK);
-                        break;
 
                     case "deleteWorker":
-
+                        workerDAO.delete(worker);
                         resp.setStatus(HttpServletResponse.SC_OK);
                         resp.sendRedirect("/workers");
                         return;

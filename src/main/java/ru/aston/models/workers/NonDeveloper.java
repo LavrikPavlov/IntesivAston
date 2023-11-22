@@ -1,6 +1,5 @@
 package ru.aston.models.workers;
 
-import ru.aston.models.Department;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -15,9 +14,8 @@ public class NonDeveloper extends Worker {
         super();
     }
 
-    public NonDeveloper(String login, String nameWorker,
-                        Department department, String role) {
-        super(login, nameWorker, department);
+    public NonDeveloper(Worker worker, String role) {
+        super(worker.getLogin(), worker.getNameWorker(), worker.getDepartment());
         this.role = role;
     }
 

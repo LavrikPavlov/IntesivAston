@@ -17,7 +17,7 @@ public class Department {
     @Column(name = "name_depart", length = 30)
     private String nameDepart;
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
     private List<Worker> workers;
 
     public Department(){

@@ -59,14 +59,14 @@
             <button type="button" onclick="performAction('updateWorker')">Update Name</button>
             <br>
 
-            <c:if test="${worker.getClass().name == 'ru.aston.models.workers.NonDeveloper' and not empty worker.role}">
+            <c:if test="${worker.getClass().name == 'ru.aston.models.workers.NonDeveloper'}">
                 <label for="role">Role:</label>
                 <input type="text" id="role" name="role" value="${worker.role}">
                 <button type="button" onclick="performAction('updateWorker')">Update Role</button>
                 <br>
             </c:if>
 
-            <c:if test="${worker.getClass().name == 'ru.aston.models.workers.Developer' and not empty worker.programmingLanguage}">
+            <c:if test="${worker.getClass().name == 'ru.aston.models.workers.Developer'}">
                 <label for="programmingLanguage">Programming Language:</label>
                 <input type="text" id="programmingLanguage" name="programmingLanguage" value="${worker.programmingLanguage}">
                 <button type="button" onclick="performAction('updateWorker')">Update Programming Language</button>

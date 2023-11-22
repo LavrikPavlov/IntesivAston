@@ -1,5 +1,6 @@
 package ru.aston.models.workers;
 
+import org.hibernate.annotations.DynamicUpdate;
 import ru.aston.models.Department;
 import ru.aston.models.Task;
 import ru.aston.models.abstractModels.AbstractWorkerFields;
@@ -28,9 +29,12 @@ public abstract class Worker extends AbstractWorkerFields {
     @Column(name = "name_user")
     private String nameWorker;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id")
     private Department department;
+
+    @Column(name = "worker_type", insertable = false, updatable = false)
+    private String workerType;
 
     @ManyToMany(mappedBy = "workers", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     List<Task> tasks;
@@ -51,6 +55,18 @@ public abstract class Worker extends AbstractWorkerFields {
 
     public void setNameUser(String nameUser) {
         this.nameWorker = nameUser;
+    }
+
+    public void setNameWorker(String nameWorker) {
+        this.nameWorker = nameWorker;
+    }
+
+    public String getWorkerType() {
+        return workerType;
+    }
+
+    public void setWorkerType(String workerType) {
+        this.workerType = workerType;
     }
 
     public Department getDepartment() {

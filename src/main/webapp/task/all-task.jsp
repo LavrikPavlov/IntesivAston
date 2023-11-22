@@ -27,7 +27,7 @@
                 <tr>
                     <td>${task.id}</td>
                     <td>${task.nameTask}</td>
-                    <td>${task.taskText}</td>
+                    <td>${task.textTask}</td>
                     <td><a href="${pageContext.request.contextPath}/task?id=${task.id}">Details</a></td>
                 </tr>
             </c:forEach>

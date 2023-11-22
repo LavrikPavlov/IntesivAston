@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import ru.aston.connect.HibernateConnect;
 import ru.aston.dao.implementDAO.CRUDCustomImpl;
 import ru.aston.models.Department;
+import ru.aston.models.Task;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -22,11 +23,7 @@ public class DepartmentDAO implements CRUDCustomImpl<Department> {
     @Override
     public List<Department> findAll() {
         try (Session session = HibernateConnect.getSessionFactory().openSession()) {
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<Department> query = criteriaBuilder.createQuery(Department.class);
-            Root<Department> root = query.from(Department.class);
-            query.select(root);
-            return session.createQuery(query).list();
+            return session.createQuery("SELECT d FROM Department d", Department.class).getResultList();
         }
     }
 

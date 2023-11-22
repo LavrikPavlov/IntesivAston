@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import ru.aston.connect.HibernateConnect;
 import ru.aston.dao.implementDAO.CRUDCustomImpl;
 import ru.aston.models.Task;
+import ru.aston.models.workers.Worker;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -23,11 +24,8 @@ public class TaskDAO implements CRUDCustomImpl<Task> {
     @Override
     public List<Task> findAll() {
         try (Session session = HibernateConnect.getSessionFactory().openSession()) {
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<Task> query = criteriaBuilder.createQuery(Task.class);
-            Root<Task> root = query.from(Task.class);
-            query.select(root);
-            return session.createQuery(query).list();
+
+            return session.createQuery("SELECT t FROM Task t", Task.class).getResultList();
         }
     }
 
