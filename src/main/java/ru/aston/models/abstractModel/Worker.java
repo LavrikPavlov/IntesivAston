@@ -45,6 +45,8 @@ public abstract class Worker extends AbstractWorkerFields{
         this.tasks = tasks;
     }
 
+
+
     public String getLogin() {
         return login;
     }
