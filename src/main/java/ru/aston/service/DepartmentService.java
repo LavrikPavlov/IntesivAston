@@ -1,13 +1,15 @@
 package ru.aston.service;
 
-import com.sun.org.apache.bcel.internal.generic.PUSH;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.aston.models.Department;
+import ru.aston.models.abstractModel.Worker;
 import ru.aston.repositories.DepartmentRepository;
 
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,5 +46,15 @@ public class DepartmentService {
     @Transactional
     public void delete(int id){
         departmentRepository.deleteById(id);
+    }
+
+    public List<Worker> getWorkersByDepartmentId(int id){
+        Optional<Department> department = departmentRepository.findById(id);
+        if(department.isPresent()){
+            Hibernate.initialize(department.get().getWorkers());
+            return department.get().getWorkers();
+        } else {
+            return Collections.emptyList();
+        }
     }
 }
