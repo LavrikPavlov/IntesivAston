@@ -3,7 +3,7 @@
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Component;
 //import org.springframework.validation.Errors;
-//import ru.aston.models.abstractModel.Worker;
+//import ru.aston.models.workers.Worker;
 //import ru.aston.service.WorkerService;
 //
 //import javax.validation.Validator;

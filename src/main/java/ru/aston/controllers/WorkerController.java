@@ -3,9 +3,10 @@ package ru.aston.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.aston.models.Task;
-import ru.aston.models.abstractModel.Worker;
+import ru.aston.models.workers.Worker;
+import ru.aston.service.DepartmentService;
 import ru.aston.service.TaskService;
 import ru.aston.service.WorkerService;
 
@@ -16,17 +17,19 @@ import javax.validation.Valid;
 public class WorkerController {
 
     private final TaskService taskService;
-
+    private final DepartmentService departmentService;
     private final WorkerService workerService;
 
 
     @Autowired
-    public WorkerController(TaskService taskService, WorkerService workerService) {
+    public WorkerController(TaskService taskService, DepartmentService departmentService,
+                            WorkerService workerService) {
         this.taskService = taskService;
+        this.departmentService = departmentService;
         this.workerService = workerService;
     }
 
-    @GetMapping
+    @GetMapping()
     public String index(Model model){
         model.addAttribute("workers", workerService.findAll());
         return "worker/all-workers";
@@ -35,23 +38,33 @@ public class WorkerController {
     @GetMapping("/{id}")
     public String showProfile(Model model, @PathVariable("id") int id){
         model.addAttribute("worker", workerService.findById(id));
-        model.addAttribute("task", taskService.findAll());
+        model.addAttribute("tasks", taskService.findAll());
         return "worker/profile";
     }
 
     @GetMapping("/new")
-    public String newWorker(){
+    public String create(Model model){
+        model.addAttribute("worker", new Worker());
+        model.addAttribute("departments", departmentService.findAll());
         return "worker/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("worker") @Valid Worker worker){
+    public String create(@ModelAttribute("worker") @Valid Worker worker,
+                         BindingResult bindingResult, Model model){
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("departments", departmentService.findAll());
+            return "worker/new";
+        }
         workerService.save(worker);
         return "redirect:/workers";
     }
 
     @GetMapping("{id}/edit")
-    public String updateWorker(){
+    public String updateWorker(Model model, @PathVariable("id") int id){
+        model.addAttribute("worker", workerService.findById(id));
+        model.addAttribute("departments", departmentService.findAll());
         return "worker/edit";
     }
 
@@ -68,15 +81,16 @@ public class WorkerController {
         return "redirect:/workers";
     }
 
-    @PostMapping("/{id}/delete")
-    public String deleteTask(@PathVariable("id") int id, @ModelAttribute("worker") Task task ){
-        workerService.deleteTask(id, task.getId());
+    @DeleteMapping("/{id}/delete")
+    public String deleteTask(@PathVariable("id") int id, @RequestParam("taskId") int taskId) {
+        workerService.deleteTask(id, taskId);
         return "redirect:/workers/" + id;
     }
 
+
     @PostMapping("/{id}/assign")
-        public String assign(@PathVariable("id") int id, @ModelAttribute("worker") Task task) {
-        workerService.assignTask(id, task.getId());
+        public String assign(@PathVariable("id") int id, @RequestParam("taskId") int taskId) {
+        workerService.assignTask(id, taskId);
         return "redirect:/workers/" + id;
     }
 

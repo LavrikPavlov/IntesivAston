@@ -1,10 +1,11 @@
 package ru.aston.models;
 
-import ru.aston.models.abstractModel.Worker;
+import ru.aston.models.workers.Worker;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "department")
@@ -49,5 +50,18 @@ public class Department {
 
     public void setWorkers(List<Worker> workers) {
         this.workers = workers;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Department that = (Department) o;
+        return id == that.id && Objects.equals(nameDepart, that.nameDepart) && Objects.equals(workers, that.workers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nameDepart, workers);
     }
 }

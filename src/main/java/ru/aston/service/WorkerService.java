@@ -2,17 +2,14 @@ package ru.aston.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.aston.models.Department;
-import ru.aston.models.Task;
-import ru.aston.models.abstractModel.Worker;
+import ru.aston.models.workers.Worker;
 import ru.aston.models.workers.Developer;
 import ru.aston.models.workers.NonDeveloper;
 import ru.aston.repositories.TaskRepository;
 import ru.aston.repositories.WorkerRepository;
+import ru.aston.util.WorkerUtil;
 
-import javax.swing.plaf.PanelUI;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,17 +38,12 @@ public class WorkerService {
 
     @Transactional
     public void save(Worker worker) {
-        int departmentId = worker.getDepartment().getId();
-        String workerType = determineWorkerTypeByDepartmentId(departmentId);
-
-        worker.setWorkerType(workerType);
-
-        workerRepository.save(worker);
+        String workerType =
+                WorkerUtil.determineWorkerTypeByDepartmentId(worker.getDepartment().getId());
+        Worker newWorker = WorkerUtil.createWorkerByType(workerType, worker);
+        workerRepository.save(newWorker);
     }
 
-    private String determineWorkerTypeByDepartmentId(int departmentId) {
-        return (departmentId  == 1) ?  "Developer" : "NonDeveloper";
-    }
 
     @Transactional
     public void update(int id, Worker updateWorker){
@@ -59,24 +51,22 @@ public class WorkerService {
         workerRepository.save(changeType(updateWorker, updateWorker.getWorkerType()));
     }
 
+
     @Transactional
     public void delete(int id){
         workerRepository.deleteById(id);
     }
 
+
     @Transactional
     private Worker changeType(Worker worker, String newType) {
         if (!worker.getWorkerType().equals(newType)) {
             Worker newWorker = null;
-            switch (newType) {
-                case "Developer":
-                    newWorker = new Developer(worker, "defaultProgrammingLanguage");
-                    break;
-                case "NonDeveloper":
-                    newWorker = new NonDeveloper(worker, "defaultRole");
-                    break;
+            if (newType.equals("Developer")){
+                return new Developer();
+            }else{
+                return new NonDeveloper();
             }
-            return newWorker;
         }
         return worker;
     }
@@ -109,10 +99,6 @@ public class WorkerService {
         });
     }
 
-
-    public List<Task> getTaskByWorkerId(int workerId) {
-        return taskRepository.findByWorkersId(workerId);
-    }
 
     public Optional<Worker> getPersonByLogin(String login){
         return workerRepository.findByLogin(login);

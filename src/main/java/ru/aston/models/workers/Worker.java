@@ -1,18 +1,20 @@
-package ru.aston.models.abstractModel;
+package ru.aston.models.workers;
 
 import ru.aston.models.Department;
 import ru.aston.models.Task;
+import ru.aston.models.abstractModel.AbstractWorkerFields;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "worker_type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "Worker")
-public abstract class Worker extends AbstractWorkerFields{
+public class Worker extends AbstractWorkerFields {
 
     @Column(name = "login", unique = true)
     @Size(max = 30, min = 4, message = "Логин слишком короткий/длинный")
@@ -31,7 +33,7 @@ public abstract class Worker extends AbstractWorkerFields{
     @Column(name = "worker_type", insertable = false, updatable = false)
     private String workerType;
 
-    @ManyToMany(mappedBy = "workers", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "workers", fetch = FetchType.EAGER)
     List<Task> tasks;
 
     public Worker() {
@@ -85,5 +87,18 @@ public abstract class Worker extends AbstractWorkerFields{
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Worker worker = (Worker) o;
+        return Objects.equals(login, worker.login) && Objects.equals(nameWorker, worker.nameWorker) && Objects.equals(department, worker.department) && Objects.equals(workerType, worker.workerType) && Objects.equals(tasks, worker.tasks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(login, nameWorker, department, workerType, tasks);
     }
 }

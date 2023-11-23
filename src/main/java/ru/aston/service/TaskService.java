@@ -3,7 +3,7 @@ package ru.aston.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.aston.models.Task;
-import ru.aston.models.abstractModel.Worker;
+import ru.aston.models.workers.Worker;
 import ru.aston.repositories.TaskRepository;
 
 import javax.transaction.Transactional;
@@ -62,4 +62,5 @@ public class TaskService {
             worker.getTasks().remove(task);
         });
     }
+
 }
