@@ -74,6 +74,10 @@
     <hr>
 </div>
 <br/>
+<a href="/workers/profile/{}"><button type="button">Назад</button></a>
+<form th:method="GET" th:action="@{/workers/{id}/edit(id=${worker.getId()})}">
+    <button type="submit">Редактировать задачу</button>
+</form>&nbsp;
 <form th:method="DELETE" th:action="@{/workers/{id}(id=${worker.getId()})}">
     <button type="submit">Удалить</button>
 </form>

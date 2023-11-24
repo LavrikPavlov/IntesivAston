@@ -68,6 +68,21 @@ public class WorkerService {
 
     }
 
+    @Transactional
+    public void update(int id, Worker worker) {
+        worker.setId(id);
+        String typeWorker = WorkerUtil
+                .determineWorkerTypeByDepartmentId(worker.getDepartment().getId());
+        Worker newWorker = WorkerUtil.createWorkerByType(typeWorker, worker);
+        workerRepository.deleteById(id);
+        newWorker.setId(id);
+
+        if (newWorker instanceof Developer) {
+            developerRepository.save((Developer) newWorker);
+        } else if (newWorker instanceof NonDeveloper) {
+            nonDeveloperRepository.save((NonDeveloper) newWorker);
+        }
+    }
 
     @Transactional
     public void updateDev(int id, Developer updateWorker) {

@@ -70,6 +70,13 @@ public class WorkerController {
         return "worker/edit";
     }
 
+    @PatchMapping("{id}")
+    public String update(@ModelAttribute("worker") Worker worker,
+                         @PathVariable("id") int id){
+        workerService.update(id, worker);
+        return "redirect:/workers/" + id;
+    }
+
     @PatchMapping("/{id}/non")
     public String update(@ModelAttribute("worker") NonDeveloper updateWorker,
                          @PathVariable("id") int id){
