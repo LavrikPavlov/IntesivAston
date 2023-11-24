@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Все отделы</title>
 </head>
 <body>
+<h2>Все отделы</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="department : ${departments}">
+        <td th:text="${department.id}"></td>
+        <td><a th:href="@{/department/{id}(id=${department.id})}" th:text="${department.nameDepart}"></td>
+    </tr>
+    </tbody>
 
+    <a href="/department/new"><button type="button">Новый отдел</button></a>
+</table>
 </body>
 </html>

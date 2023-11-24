@@ -1,5 +1,7 @@
 package ru.aston.models.workers;
 
+import ru.aston.dto.WorkerDTO;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

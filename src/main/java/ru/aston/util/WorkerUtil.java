@@ -13,7 +13,7 @@ public class WorkerUtil {
             case "NonDeveloper":
                 return new NonDeveloper(originalWorker, "None");
             default:
-                throw new IllegalArgumentException("Unknown worker type: " + workerType);
+                throw new IllegalArgumentException("Не известный тип работника: " + workerType);
         }
     }
 

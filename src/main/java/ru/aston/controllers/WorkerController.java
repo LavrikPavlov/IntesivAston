@@ -5,6 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.aston.dto.WorkerDTO;
+import ru.aston.models.workers.Developer;
+import ru.aston.models.workers.NonDeveloper;
 import ru.aston.models.workers.Worker;
 import ru.aston.service.DepartmentService;
 import ru.aston.service.TaskService;
@@ -44,7 +47,7 @@ public class WorkerController {
 
     @GetMapping("/new")
     public String create(Model model){
-        model.addAttribute("worker", new Worker());
+        model.addAttribute("worker", new WorkerDTO());
         model.addAttribute("departments", departmentService.findAll());
         return "worker/new";
     }
@@ -68,10 +71,17 @@ public class WorkerController {
         return "worker/edit";
     }
 
-    @PatchMapping("/{id}")
-    public String update(@ModelAttribute("worker") @Valid Worker updateWorker,
+    @PatchMapping("/{id}/non")
+    public String update(@ModelAttribute("worker") NonDeveloper updateWorker,
                          @PathVariable("id") int id){
-        workerService.update(id, updateWorker);
+        workerService.updateNon(id, new NonDeveloper(workerService.findById(id), updateWorker.getRole()));
+        return "redirect:/workers/" + id;
+    }
+
+    @PatchMapping("/{id}/dev")
+    public String update(@ModelAttribute("worker") Developer updateWorker,
+                         @PathVariable("id") int id){
+        workerService.updateDev(id, new Developer(workerService.findById(id), updateWorker.getProgrammingLanguage()));
         return "redirect:/workers/" + id;
     }
 

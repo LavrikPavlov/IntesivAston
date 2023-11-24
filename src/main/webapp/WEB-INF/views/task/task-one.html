@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Details</title>
+</head>
+<body>
+<h2>Task Details</h2>
+<p>ID: <span th:text="${task.id}"></span></p>
+<p>Title: <span th:text="${task.nameTask}"></span></p>
+<p>Text: <span th:text="${task.textTask}"></span></p>
+
+<p>Assigned Workers:
+    <span th:each="worker : ${task.getWorkers()}">
+        </br><span th:text="${worker.nameWorker}"></span>
+    </span>
+</p>
+
+
+<form th:method="GET" th:action="@{/task/{id}/edit(id=${task.id})}">
+    <button type="submit">Редактировать задачу</button>
+</form>&nbsp;&nbsp;&nbsp;
+<form th:method="DELETE" th:action="@{/task/{id}(id=${task.id})}">
+    <button type="submit">Delete</button>
+</form>
+<br/>
+<a href="/task"><button type="button">Back</button></a>
+<br/>
+</body>
+</html>
