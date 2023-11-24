@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.aston.dto.WorkerDTO;
 import ru.aston.models.workers.Developer;
 import ru.aston.models.workers.NonDeveloper;
 import ru.aston.models.workers.Worker;
@@ -47,7 +46,7 @@ public class WorkerController {
 
     @GetMapping("/new")
     public String create(Model model){
-        model.addAttribute("worker", new WorkerDTO());
+        model.addAttribute("worker", new Worker());
         model.addAttribute("departments", departmentService.findAll());
         return "worker/new";
     }
