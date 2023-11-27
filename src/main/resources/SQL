@@ -1,0 +1,64 @@
+drop table Department CASCADE;
+drop table Task CASCADE;
+DROP TABLE Worker CASCADE;
+drop table Worker_Task CASCADE;
+
+create table Department(
+    id serial primary key,
+    name_depart varchar(30)
+);
+
+create table Task(
+    id serial primary key,
+    name_task varchar(40),
+    text_task text
+);
+
+CREATE TABLE Worker (
+    id SERIAL PRIMARY KEY,
+    login VARCHAR(20) UNIQUE,
+    name_user VARCHAR(30),
+    department_id INT REFERENCES Department(id),
+    FOREIGN KEY (department_id) REFERENCES Department(id),
+    worker_type VARCHAR(255) NOT NULL,
+    programming_language VARCHAR(30),
+    role VARCHAR(30)
+
+);
+
+create table Worker_Task(
+    worker_id int references Worker(id) ON DELETE CASCADE,
+    task_id int references Task(id) ON DELETE CASCADE,
+    date_start timestamp
+ );
+
+-- Добавляем записи в таблицу Department
+INSERT INTO Department (name_depart) VALUES
+    ('IT Department'),
+    ('HR Department'),
+    ('Marketing Department');
+
+-- Добавляем записи в таблицу Task
+INSERT INTO Task (name_task, text_task) VALUES
+    ('Develop new feature', 'Implement a new feature in the software'),
+    ('Hiring process', 'Conduct interviews for new employees'),
+    ('Create marketing campaign', 'Plan and execute a marketing campaign');
+
+-- Добавляем записи в таблицу Worker
+INSERT INTO Worker (login, name_user, department_id, programming_language, role, worker_type) VALUES
+    ('john_doe', 'John Doe', 1, 'Java', NULL, 'Developer'),
+    ('alice_smith', 'Alice Smith', 2, NULL, 'HR','NonDeveloper'),
+    ('bob_johnson', 'Bob Johnson', 3, 'C#', NULL, 'Developer'),
+    ('jane_doe', 'Jane Doe', 1, 'Python', NULL, 'Developer'),
+    ('charlie_brown', 'Charlie Brown', 2, NULL, 'Marketing', 'NonDeveloper');
+
+-- Добавляем записи в таблицу Worker_Task
+INSERT INTO Worker_Task (worker_id, task_id, date_start) VALUES
+    (1, 1, '2023-11-21 10:00:00'),
+    (2, 2, '2023-11-22 14:30:00'),
+    (3, 3, '2023-11-23 09:45:00'),
+    (4, 1, '2023-11-24 12:15:00'),
+    (5, 2, '2023-11-25 11:00:00');
+
+
+ select * from worker

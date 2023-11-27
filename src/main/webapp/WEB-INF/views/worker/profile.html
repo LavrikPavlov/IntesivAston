@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Profile</title>
+</head>
+<body>
+
+<h1>Worker Profile</h1>
+<p><strong>Login:</strong> <span th:text="${worker.login}"></span></p>
+<p><strong>Имя:</strong> <span th:text="${worker.nameWorker}"></span></p>
+<p><strong>Отдел:</strong> <span th:text="${worker.department.nameDepart}"></span></p>
+<div th:if="${worker.class.simpleName eq 'NonDeveloper' and worker.role ne null}">
+    <p>Role: <span th:text="${worker.role}"></span></p>
+    <form th:method="POST" th:action="@{/workers/{id}/non(id=${worker.getId()})}" th:object="${worker}">
+        <input type="hidden" name="_method" value="PATCH"/>
+        <input type="text" th:field="*{role}" id="role">
+        <br><br>
+        <input type="submit" value="Обновить"/>
+    </form>
+</div>
+<div th:if="${worker.class.simpleName eq 'Developer' and worker.programmingLanguage ne null}">
+    <p>Programming language: <span th:text="${worker.programmingLanguage}"></span></p>
+    <form th:method="POST" th:action="@{/workers/{id}/dev(id=${worker.getId()})}" th:object="${worker}">
+        <input type="hidden" name="_method" value="PATCH"/>
+        <input type="text" th:field="*{programmingLanguage}" id="programmingLanguage">
+        <br><br>
+        <input type="submit" value="Обновить"/>
+    </form>
+</div>
+<div th:if="${worker.getTasks().isEmpty()}">
+    <p>У пользователя отсутсвуют задачи</p>
+    <hr>
+</div>
+
+<div th:if="${!worker.getTasks().isEmpty()}">
+    <hr>
+    <b>Задачи:</b>
+    <br>
+    <table th:each="task : ${worker.getTasks()}">
+        <strong>Задача:  </strong> <span th:text="${task.nameTask}"></span>&nbsp;&nbsp;&nbsp;
+        <form th:method="GET" th:action="@{/task/{id}(id=${task.id})}">
+            <button type="submit">Редактировать задачу</button>
+        </form>&nbsp;&nbsp;&nbsp;
+        <form th:method="DELETE" th:action="@{/workers/{id}/delete(id=${worker.getId()})}" style="display: inline;">
+            <input type="hidden" name="taskId" th:value="${task.getId()}" />
+            <button type="submit">Удалить задачу</button>
+        </form>
+    </table>
+    <hr>
+</div>
+<br><br>
+<div th:if="${tasks.isEmpty()}">
+    <h3>Задач нет</h3>
+    <hr>
+</div>
+<div th:if="${!tasks.isEmpty()}">
+    <hr>
+    <h3>Все задачи</h3>
+    <br>
+    <table th:each="task : ${tasks}">
+        <div th:if="${!worker.getTasks().contains(task)}">
+            <strong>Задача:</strong> <span th:text="${task.nameTask}"></span>&nbsp;&nbsp;&nbsp;
+            <form th:method="GET" th:action="@{/task/{id}/edit(id=${task.id})}">
+                <button type="submit">Редактировать задачу</button>
+            </form>&nbsp;&nbsp;&nbsp;
+            <form th:method="POST" th:action="@{/workers/{id}/assign(id=${worker.getId()})}" style="display: inline;">
+                <input type="hidden" name="taskId" th:value="${task.getId()}" />
+                <button type="submit">Добавить задачу</button>
+            </form>
+        </div>
+    </table>
+    <hr>
+</div>
+<br/>
+<a href="/workers/profile/{}"><button type="button">Назад</button></a>
+<form th:method="GET" th:action="@{/workers/{id}/edit(id=${worker.getId()})}">
+    <button type="submit">Редактировать задачу</button>
+</form>&nbsp;
+<form th:method="DELETE" th:action="@{/workers/{id}(id=${worker.getId()})}">
+    <button type="submit">Удалить</button>
+</form>
+<br/>
+<a href="/workers"><button type="button">Назад</button></a>
+<br/>
+
+</body>
+</html>

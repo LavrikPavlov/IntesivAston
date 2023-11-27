@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+</head>
+<body>
+<h1>Обновление пользователя</h1>
+<form th:method="POST" th:action="@{/workers/{id}(id=${worker.getId()})}" th:object="${worker}">
+    <input type="hidden" name="_method" value="PATCH"/>
+
+    <label for="nameWorker">Имя Фамилия</label><br>
+    <input type="text" th:field="*{nameWorker}" id="nameWorker">
+    <br><br>
+
+    <label for="login">Логин</label><br>
+    <input type="text" th:field="*{login}" id="login">
+    <br><br>
+
+    <label for="department">Отдел:</label>
+    <select id="department" name="department" th:field="*{department.id}">
+        <option th:each="dept : ${departments}" th:value="${dept.id}" th:text="${dept.nameDepart}"></option>
+    </select>
+    <br><br>
+
+    <input type="submit" value="Обновить"/>
+</form>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Департамент</title>
+</head>
+<body>
+<h2>Department Details</h2>
+<p>ID: <span th:text="${department.getId()}"></span></p>
+<p>Title: <span th:text="${department.getNameDepart()}"></span></p>
+
+<p>Workers:</p>
+<ul>
+    <span th:each="worker : ${department.workers}">
+        <li>
+            <span th:text="${worker.nameWorker}"></span>
+            &nbsp;|&nbsp;
+            <a th:href="@{/workers/{id}(id=${worker.id})}" th:text="${worker.login}"></a>
+        </li>
+    </span>
+</ul>
+
+<form th:method="GET" th:action="@{/department/{id}/edit(id=${department.getId()})}">
+    <button type="submit">Редактировать отдел</button>
+</form>
+&nbsp;&nbsp;&nbsp;
+<form th:method="DELETE" th:action="@{/department/{id}(id=${department.getId()})}">
+    <button type="submit">Delete</button>
+</form>
+<br/>
+<a href="/department"><button type="button">Back</button></a>
+<br/>
+
+</body>
+</html>
