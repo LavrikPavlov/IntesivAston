@@ -1,6 +1,5 @@
 package ru.aston.models.workers;
 
-import org.hibernate.annotations.DynamicUpdate;
 import ru.aston.models.Department;
 import ru.aston.models.Task;
 import ru.aston.models.abstractModels.AbstractWorkerFields;

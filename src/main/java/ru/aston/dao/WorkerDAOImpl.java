@@ -3,7 +3,7 @@ package ru.aston.dao;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ru.aston.connect.HibernateConnect;
-import ru.aston.dao.implementDAO.CRUDCustomImpl;
+import ru.aston.dao.implementDAO.CRUDCustom;
 import ru.aston.models.Task;
 import ru.aston.models.workers.Developer;
 import ru.aston.models.workers.NonDeveloper;
@@ -17,7 +17,7 @@ import java.util.List;
 
 
 
-public class WorkerDAO implements CRUDCustomImpl<Worker> {
+public class WorkerDAOImpl implements CRUDCustom<Worker> {
 
 
     @Override

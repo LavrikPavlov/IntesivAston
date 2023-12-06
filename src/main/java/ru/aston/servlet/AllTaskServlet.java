@@ -1,6 +1,6 @@
 package ru.aston.servlet;
 
-import ru.aston.dao.TaskDAO;
+import ru.aston.dao.TaskDAOImpl;
 import ru.aston.models.Task;
 
 import javax.servlet.ServletException;
@@ -13,17 +13,17 @@ import java.io.IOException;
 @WebServlet("/tasks")
 public class AllTaskServlet extends HttpServlet {
 
-    private TaskDAO taskDAO;
+    private TaskDAOImpl taskDAOImpl;
 
     @Override
     public void init() throws ServletException {
         super.init();
-        taskDAO = new TaskDAO();
+        taskDAOImpl = new TaskDAOImpl();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("departments", taskDAO.findAll());
+        req.setAttribute("departments", taskDAOImpl.findAll());
         req.getRequestDispatcher("task/all-task.jsp").forward(req,resp);
     }
 
@@ -32,7 +32,7 @@ public class AllTaskServlet extends HttpServlet {
         Task newTask = new Task();
         newTask.setNameTask(req.getParameter("NameTask"));
         newTask.setTextTask(req.getParameter("TaskText"));
-        taskDAO.save(newTask);
+        taskDAOImpl.save(newTask);
 
         resp.sendRedirect(req.getContextPath() + "/tasks");
     }

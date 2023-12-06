@@ -1,6 +1,6 @@
 package ru.aston.servlet;
 
-import ru.aston.dao.DepartmentDAO;
+import ru.aston.dao.DepartmentDAOImpl;
 import ru.aston.models.Department;
 
 import javax.servlet.ServletException;
@@ -13,12 +13,12 @@ import java.io.IOException;
 @WebServlet("/departments")
 public class AllDepartmentsServlet extends HttpServlet {
 
-    private DepartmentDAO departamentDAO;
+    private DepartmentDAOImpl departamentDAO;
 
     @Override
     public void init() throws ServletException {
         super.init();
-        departamentDAO = new DepartmentDAO();
+        departamentDAO = new DepartmentDAOImpl();
     }
 
     @Override

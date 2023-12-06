@@ -1,9 +1,9 @@
 package ru.aston.servlet;
 
 
-import ru.aston.dao.DepartmentDAO;
-import ru.aston.dao.TaskDAO;
-import ru.aston.dao.WorkerDAO;
+import ru.aston.dao.DepartmentDAOImpl;
+import ru.aston.dao.TaskDAOImpl;
+import ru.aston.dao.WorkerDAOImpl;
 import ru.aston.models.Department;
 import ru.aston.models.Task;
 import ru.aston.models.workers.Developer;
@@ -21,18 +21,18 @@ import java.util.List;
 @WebServlet(name = "WorkerProfileServlet", value = "/profile")
 public class WorkerProfileServlet extends HttpServlet {
 
-    private WorkerDAO workerDAO;
-    private DepartmentDAO departmentDAO;
+    private WorkerDAOImpl workerDAOImpl;
+    private DepartmentDAOImpl departmentDAOImpl;
 
-    private TaskDAO taskDAO;
+    private TaskDAOImpl taskDAOImpl;
 
 
     @Override
     public void init() throws ServletException {
         super.init();
-        workerDAO = new WorkerDAO();
-        departmentDAO = new DepartmentDAO();
-        taskDAO = new TaskDAO();
+        workerDAOImpl = new WorkerDAOImpl();
+        departmentDAOImpl = new DepartmentDAOImpl();
+        taskDAOImpl = new TaskDAOImpl();
 
     }
 
@@ -42,9 +42,9 @@ public class WorkerProfileServlet extends HttpServlet {
         String workerIdParam = req.getParameter("id");
         if (workerIdParam != null) {
             try {
-                List<Task> tasks = taskDAO.findAll();
-                List<Department> departments = departmentDAO.findAll();
-                Worker worker = workerDAO.findById(Integer.parseInt(workerIdParam));
+                List<Task> tasks = taskDAOImpl.findAll();
+                List<Department> departments = departmentDAOImpl.findAll();
+                Worker worker = workerDAOImpl.findById(Integer.parseInt(workerIdParam));
 
 
                 req.setAttribute("worker", worker);
@@ -72,23 +72,23 @@ public class WorkerProfileServlet extends HttpServlet {
                 int workerId = Integer.parseInt(workerIdParam);
                 int taskId = Integer.parseInt(req.getParameter("taskId"));
 
-                Worker worker = workerDAO.findById(Integer.parseInt(workerIdParam));
-                Department department = departmentDAO
+                Worker worker = workerDAOImpl.findById(Integer.parseInt(workerIdParam));
+                Department department = departmentDAOImpl
                         .findById(Integer.parseInt(req.getParameter("department")));
 
                 switch (action) {
                     case "assignTask":
-                        workerDAO.assignTask(workerId,taskId);
+                        workerDAOImpl.assignTask(workerId,taskId);
                         break;
 
                     case "removeTask":
-                        workerDAO.deleteTask(workerId,taskId);
+                        workerDAOImpl.deleteTask(workerId,taskId);
                         break;
 
                     case "changeDepart":
                         worker.setDepartment(department);
-                        workerDAO.chacngeWorkerType(worker, req, resp);
-                        workerDAO.update(worker);
+                        workerDAOImpl.chacngeWorkerType(worker, req, resp);
+                        workerDAOImpl.update(worker);
                         resp.setStatus(HttpServletResponse.SC_OK);
                         break;
 
@@ -101,13 +101,13 @@ public class WorkerProfileServlet extends HttpServlet {
                             ((NonDeveloper) worker).setRole(req.getParameter("role"));
                         }
 
-                        workerDAO.update(worker);
+                        workerDAOImpl.update(worker);
                         resp.setStatus(HttpServletResponse.SC_OK);
                         break;
 
 
                     case "deleteWorker":
-                        workerDAO.delete(worker);
+                        workerDAOImpl.delete(worker);
                         resp.setStatus(HttpServletResponse.SC_OK);
                         resp.sendRedirect("/workers");
                         return;

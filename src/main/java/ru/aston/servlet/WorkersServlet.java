@@ -1,7 +1,7 @@
 package ru.aston.servlet;
 
-import ru.aston.dao.DepartmentDAO;
-import ru.aston.dao.WorkerDAO;
+import ru.aston.dao.DepartmentDAOImpl;
+import ru.aston.dao.WorkerDAOImpl;
 import ru.aston.models.Department;
 import ru.aston.models.workers.Developer;
 import ru.aston.models.workers.NonDeveloper;
@@ -19,22 +19,22 @@ import java.util.List;
 @WebServlet("/workers")
 public class WorkersServlet extends HttpServlet {
 
-    private DepartmentDAO departmentDAO;
+    private DepartmentDAOImpl departmentDAOImpl;
 
-    private WorkerDAO workerDAO;
+    private WorkerDAOImpl workerDAOImpl;
 
     @Override
     public void init() throws ServletException {
         super.init();
-        departmentDAO = new DepartmentDAO();
-        workerDAO = new WorkerDAO();
+        departmentDAOImpl = new DepartmentDAOImpl();
+        workerDAOImpl = new WorkerDAOImpl();
 
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Department> departments = departmentDAO.findAll();
-        List<Worker> workers = workerDAO.findAll();
+        List<Department> departments = departmentDAOImpl.findAll();
+        List<Worker> workers = workerDAOImpl.findAll();
         req.setAttribute("departments", departments);
         req.setAttribute("workers", workers);
         req.getRequestDispatcher("worker/all-workers.jsp").forward(req,resp);
@@ -43,7 +43,7 @@ public class WorkersServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Department department = departmentDAO
+        Department department = departmentDAOImpl
                 .findById(Integer.parseInt(req.getParameter("department")));
         Worker workerNon = new Developer();
         Worker workerDev = new NonDeveloper();
@@ -56,7 +56,7 @@ public class WorkersServlet extends HttpServlet {
                     workerDev,
                     "None"
             );
-            workerDAO.save(newDevoleper);
+            workerDAOImpl.save(newDevoleper);
         } else {
             workerNon.setDepartment(department);
             workerNon.setLogin(req.getParameter("login"));
@@ -65,7 +65,7 @@ public class WorkersServlet extends HttpServlet {
                     workerNon,
                     "None"
             );
-            workerDAO.save(newNonDev);
+            workerDAOImpl.save(newNonDev);
         }
 
         resp.sendRedirect(req.getContextPath() + "/workers");

@@ -2,35 +2,29 @@ package ru.aston.dao;
 
 import org.hibernate.Session;
 import ru.aston.connect.HibernateConnect;
-import ru.aston.dao.implementDAO.CRUDCustomImpl;
-import ru.aston.models.Task;
-import ru.aston.models.workers.Worker;
+import ru.aston.dao.implementDAO.CRUDCustom;
+import ru.aston.models.Department;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
-public class TaskDAO implements CRUDCustomImpl<Task> {
-
+public class DepartmentDAOImpl implements CRUDCustom<Department> {
 
     @Override
-    public Task findById(int id) {
+    public Department findById(int id) {
         try (Session session = HibernateConnect.getSessionFactory().openSession()) {
-            return session.get(Task.class, id);
+            return session.get(Department.class, id);
         }
     }
 
     @Override
-    public List<Task> findAll() {
+    public List<Department> findAll() {
         try (Session session = HibernateConnect.getSessionFactory().openSession()) {
-
-            return session.createQuery("SELECT t FROM Task t", Task.class).getResultList();
+            return session.createQuery("SELECT d FROM Department d", Department.class).getResultList();
         }
     }
 
     @Override
-    public void save(Task entity) {
+    public void save(Department entity) {
         try (Session session = HibernateConnect.getSessionFactory().openSession()) {
             session.beginTransaction();
             session.save(entity);
@@ -39,7 +33,7 @@ public class TaskDAO implements CRUDCustomImpl<Task> {
     }
 
     @Override
-    public void update(Task entity) {
+    public void update(Department entity) {
         try (Session session = HibernateConnect.getSessionFactory().openSession()) {
             session.beginTransaction();
             session.update(entity);
@@ -48,7 +42,7 @@ public class TaskDAO implements CRUDCustomImpl<Task> {
     }
 
     @Override
-    public void delete(Task entity) {
+    public void delete(Department entity) {
         try (Session session = HibernateConnect.getSessionFactory().openSession()) {
             session.beginTransaction();
             session.delete(entity);

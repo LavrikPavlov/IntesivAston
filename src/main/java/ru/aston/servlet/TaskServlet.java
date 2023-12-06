@@ -1,6 +1,6 @@
 package ru.aston.servlet;
 
-import ru.aston.dao.TaskDAO;
+import ru.aston.dao.TaskDAOImpl;
 import ru.aston.models.Task;
 
 import javax.servlet.ServletException;
@@ -13,12 +13,12 @@ import java.io.IOException;
 @WebServlet("/task")
 public class TaskServlet extends HttpServlet {
 
-    private TaskDAO taskDAO;
+    private TaskDAOImpl taskDAOImpl;
 
     @Override
     public void init() throws ServletException {
         super.init();
-        taskDAO = new TaskDAO();
+        taskDAOImpl = new TaskDAOImpl();
     }
 
     @Override
@@ -28,7 +28,7 @@ public class TaskServlet extends HttpServlet {
 
         if (taskIdParam != null) {
             try {
-                Task task = taskDAO.findById(Integer.parseInt(taskIdParam));
+                Task task = taskDAOImpl.findById(Integer.parseInt(taskIdParam));
                 req.setAttribute("Task", task);
 
                 req.getRequestDispatcher("/task/taskOne.jsp").forward(req, resp);
@@ -47,16 +47,16 @@ public class TaskServlet extends HttpServlet {
         String taskIdParam = req.getParameter("id");
         String action = req.getParameter("action");
         if (taskIdParam != null) {
-            Task task = taskDAO.findById(Integer.parseInt(taskIdParam));
+            Task task = taskDAOImpl.findById(Integer.parseInt(taskIdParam));
             switch (action) {
                 case "updateTask":
                     Task newTask = new Task();
                     newTask.setNameTask(req.getParameter("textTask"));
                     newTask.setTextTask(req.getParameter("taskText"));
-                    taskDAO.save(newTask);
+                    taskDAOImpl.save(newTask);
                     break;
                 case "deleteTask":
-                    taskDAO.delete(task);
+                    taskDAOImpl.delete(task);
                     resp.sendRedirect("/tasks");
                     return;
             }

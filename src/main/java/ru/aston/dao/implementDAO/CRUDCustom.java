@@ -2,7 +2,7 @@ package ru.aston.dao.implementDAO;
 
 import java.util.List;
 
-public interface CRUDCustomImpl<T> {
+public interface CRUDCustom<T> {
 
     T findById(int id);
 
